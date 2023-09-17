@@ -1,0 +1,36 @@
+@import '@fontsource/poppins';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.title {
+	@apply text-4xl md:text-6xl font-semibold;
+}
+
+.btn {
+	@apply w-fit rounded-lg text-2xl uppercase font-semibold py-2 px-5 bg-transparent border-2 text-indigo-500 border-indigo-600 duration-500 hover:bg-indigo-600 hover:text-white;
+}
+
+.card {
+	transition: rotate 0.3s ease-out;
+	transform-style: preserve-3d;
+}
+
+.card.flip {
+	rotate: y 180deg;
+	pointer-events: none;
+}
+
+.card .empty {
+	position: absolute;
+	inset: 0;
+	display: grid;
+	place-content: center;
+	backface-visibility: hidden;
+	rotate: y 180deg;
+}
+
+.card .matched {
+	transition: opacity 0.3s ease-out;
+	opacity: 0.4;
+}
