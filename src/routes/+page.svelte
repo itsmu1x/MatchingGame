@@ -158,7 +158,7 @@
 				disabled={isSelected || isMatched}
 				class:flip={isSelected || startingFlip}
 				on:click={() => select(index)}
-				class="card w-20 h-16 md:w-24 md:h-20 p-2 md:p-5 text-4xl md:text-5xl rounded-lg bg-main hover:bg-main/75 duration-300"
+				class="card w-20 h-16 md:w-24 md:h-20 p-2 md:p-5 text-4xl rounded-lg bg-main hover:bg-main/75 duration-300"
 			>
 				<div class:empty={!isMatched} class:matched={isMatched}>
 					{emoji}
