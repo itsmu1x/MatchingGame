@@ -2,7 +2,6 @@
 	import '../app.css'
 	import { browser } from '$app/environment'
 	import _emojis, { time, matchCount, size } from './emojis'
-	import postcss from 'postcss'
 
 	let state: State = 'difficulty'
 	let difficulty: Difficulty = 'Easy'
@@ -11,17 +10,18 @@
 	let timer = time[difficulty]
 	let selected: number[] = []
 	let matched: number[] = []
+	let startingFlip = true
 
 	function setDifficulty(newDifficulty: Difficulty) {
 		difficulty = newDifficulty
-		state = 'main'
+		startNewGame()
 	}
 
 	function resetTime() {
 		timer = time[difficulty]
 		timerId && clearInterval(timerId)
 		timerId = setInterval(() => {
-			if (state === 'pause') return
+			if (state === 'pause' || startingFlip) return
 			if (state !== 'playing') return timerId && clearInterval(timerId)
 
 			timer -= 1
@@ -70,6 +70,8 @@
 		emojis = emojis.concat([...emojis]) // make another copy
 		shuffle(emojis)
 		resetTime()
+		startingFlip = true
+		setTimeout(() => (startingFlip = false), 1250)
 	}
 
 	$: {
@@ -101,7 +103,7 @@
 				case 'pause':
 					state = 'playing'
 					break
-				case 'main':
+				case 'difficulty':
 					startNewGame()
 					break
 				default:
@@ -136,13 +138,6 @@
 	</div>
 {/if}
 
-{#if state === 'main'}
-	<div class="flex flex-col gap-y-6 md:gap-y-8 items-center">
-		<h1 class="title">Matching Game</h1>
-		<button on:click={startNewGame} class="btn">Start</button>
-	</div>
-{/if}
-
 {#if state === 'playing'}
 	<h1 class="title text-center mb-5 md:mb-7">Timer {timer}⏳</h1>
 
@@ -153,7 +148,7 @@
 
 			<button
 				disabled={isSelected || isMatched}
-				class:flip={isSelected}
+				class:flip={isSelected || startingFlip}
 				on:click={() => select(index)}
 				class="card w-24 h-20 p-5 text-2xl md:text-4xl rounded-lg bg-main hover:bg-main/75 duration-300"
 			>
@@ -168,13 +163,13 @@
 {#if state === 'lose'}
 	<div class="flex flex-col gap-y-6 md:gap-y-8 items-center">
 		<h1 class="title">You Lost. 💩</h1>
-		<button on:click={startNewGame} class="btn">Start</button>
+		<button on:click={startNewGame} class="btn">Play Again</button>
 	</div>
 {/if}
 
 {#if state === 'win'}
 	<div class="flex flex-col gap-y-6 md:gap-y-8 items-center">
 		<h1 class="title">You Won. 🏆</h1>
-		<button on:click={startNewGame} class="btn">Start</button>
+		<button on:click={startNewGame} class="btn">Play Again</button>
 	</div>
 {/if}
