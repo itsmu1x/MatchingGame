@@ -9,9 +9,24 @@ export default {
       },
       fontFamily: {
         poppins: "'Poppins', sans-serif"
+      },
+      keyframes: {
+        shake: {
+          '25%': {
+            "transform": "translateX(6px)"
+          },
+          '50%': {
+            'transform': 'translateX(-6px)'
+          },
+          '75%': {
+            'transform': 'translateX(12px)'
+          }
+        }
+      },
+      animation: {
+        'shake': 'shake 0.4s'
       }
     },
   },
   plugins: [],
 }
-

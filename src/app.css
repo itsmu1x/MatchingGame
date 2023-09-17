@@ -8,7 +8,7 @@
 }
 
 .btn {
-	@apply w-fit rounded-lg text-2xl uppercase font-semibold py-2 px-5 bg-transparent border-2 text-indigo-500 border-indigo-600 duration-500 hover:bg-indigo-600 hover:text-white;
+	@apply w-fit rounded-lg text-2xl uppercase font-semibold py-2 px-5 bg-transparent border-2 text-cyan-500 border-cyan-600 duration-500 hover:bg-cyan-600 hover:text-white;
 }
 
 .card {
@@ -32,5 +32,5 @@
 
 .card .matched {
 	transition: opacity 0.3s ease-out;
-	opacity: 0.4;
+	opacity: 0.7;
 }

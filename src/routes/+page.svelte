@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '../app.css'
 	import { browser } from '$app/environment'
-	import _emojis, { time, matchCount, size } from './emojis'
+	import _emojis, { time, size } from './emojis'
 
 	let state: State = 'difficulty'
 	let difficulty: Difficulty = 'Easy'
@@ -11,9 +11,11 @@
 	let selected: number[] = []
 	let matched: number[] = []
 	let startingFlip = true
+	let matchCount = size[difficulty] / 2
 
 	function setDifficulty(newDifficulty: Difficulty) {
 		difficulty = newDifficulty
+		matchCount = size[difficulty] / 2
 		startNewGame()
 	}
 
@@ -38,7 +40,7 @@
 		if (selected.length > 1) {
 			if (emojis[selected[0]] === emojis[selected[1]]) {
 				matched = matched.concat(...selected)
-				if (matched.length === size)
+				if (matched.length === size[difficulty])
 					return setTimeout(() => {
 						state = 'win'
 					}, 300)
@@ -139,9 +141,15 @@
 {/if}
 
 {#if state === 'playing'}
-	<h1 class="title text-center mb-5 md:mb-7">Timer {timer}⏳</h1>
+	<h1
+		class="title text-center mb-5 md:mb-7"
+		class:animate-shake={timer === 5}
+		class:text-red-600={timer <= 5}
+	>
+		Timer {timer}⏳
+	</h1>
 
-	<div class="grid grid-cols-4 md:grid-cols-5 gap-6">
+	<div class="grid grid-cols-4 gap-4 md:gap-6">
 		{#each emojis as emoji, index}
 			{@const isSelected = selected.includes(index)}
 			{@const isMatched = matched.includes(index)}
@@ -150,7 +158,7 @@
 				disabled={isSelected || isMatched}
 				class:flip={isSelected || startingFlip}
 				on:click={() => select(index)}
-				class="card w-24 h-20 p-5 text-2xl md:text-4xl rounded-lg bg-main hover:bg-main/75 duration-300"
+				class="card w-20 h-16 md:w-24 md:h-20 p-2 md:p-5 text-4xl md:text-5xl rounded-lg bg-main hover:bg-main/75 duration-300"
 			>
 				<div class:empty={!isMatched} class:matched={isMatched}>
 					{emoji}
@@ -158,6 +166,8 @@
 			</button>
 		{/each}
 	</div>
+
+	<button on:click={() => (state = 'difficulty')} class="btn mt-4 mx-auto">Cancel</button>
 {/if}
 
 {#if state === 'lose'}
